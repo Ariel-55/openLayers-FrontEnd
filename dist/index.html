@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>.map {
+          width: 1000px;
+          height: 400px;
+        }
+        body{
+            background-image: url('/earth.c7cee64f.jpg');
+            color: white
+        }</style>
+    <title>Geospatial Front End</title>
+  </head>
+  <body style="text-align: center;">
+    <h1>Geospatial Front End</h1>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10" id="colMap">
+                <div id="map" class="map"></div>
+            </div>
+        </div>
+        <br>
+        <h2>Please select the option to display your map</h2>
+        <br>
+        <!-- <button type="button" class="btn btn-info">Layers Info</button> -->
+        <select name="cars" id="layers" onclick="obtainImage()">
+            <option value="NATURAL-COLOR">NATURAL-COLOR</option>
+            <option value="FALSE-COLOR">FALSE-COLOR</option>
+            <option value="NDVI">NDVI</option>
+            <option value="MOISTURE-INDEX">MOISTURE-INDEX</option>
+            <option value="SWIR">SWIR</option>
+            <!-- <option value="NDWI">NDWI</option>
+            <option value="NDSI">NDSI</option> -->
+
+          </select>
+    </div>
+
+
+ 
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+    -->
+  </body>
+  <script>function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var k = 0;
+$(document).ready(function () {
+  obtainImage();
+});
+
+function sendURL() {
+  return _sendURL.apply(this, arguments);
+}
+
+function _sendURL() {
+  _sendURL = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var valores, response;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            valores = $("#layers option:selected").text();
+            _context.next = 3;
+            return axios({
+              url: 'http://localhost:3000/wmtURL',
+              //responseType: "stream",
+              method: "POST",
+              data: {
+                colors: valores
+              }
+            });
+
+          case 3:
+            response = _context.sent;
+            console.log(response.data);
+            return _context.abrupt("return", response.data);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _sendURL.apply(this, arguments);
+}
+
+function obtainImage() {
+  return _obtainImage.apply(this, arguments);
+}
+
+function _obtainImage() {
+  _obtainImage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var requestedURL, extent, projection, map, string1, _requestedURL;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+
+            if (!(k == 0)) {
+              _context2.next = 14;
+              break;
+            }
+
+            console.log('Hola Mundo--------');
+            k = k + 1;
+            console.log('k values is:');
+            console.log(k);
+            _context2.next = 8;
+            return sendURL();
+
+          case 8:
+            requestedURL = _context2.sent;
+            extent = [0, 0, 1024, 968];
+            projection = new ol.proj.Projection({
+              code: 'static-image',
+              units: 'pixels',
+              extent: extent
+            });
+            map = new ol.Map({
+              layers: [new ol.layer.Image({
+                source: new ol.source.ImageStatic({
+                  url: 'http://localhost:3000/imageTest.jpg',
+                  projection: 'EPSG:31982',
+                  imageExtent: extent
+                })
+              })],
+              target: 'map',
+              view: new ol.View({
+                projection: projection,
+                center: ol.extent.getCenter(extent),
+                zoom: 2
+              })
+            });
+            _context2.next = 24;
+            break;
+
+          case 14:
+            console.log('k values is:');
+            console.log(k);
+            string1 = "<div id=\"map\" class=\"map\"></div>";
+            $('#colMap').html(string1);
+            _context2.next = 20;
+            return sendURL();
+
+          case 20:
+            _requestedURL = _context2.sent;
+            extent = [0, 0, 1024, 968];
+            projection = new ol.proj.Projection({
+              code: 'static-image',
+              units: 'pixels',
+              extent: extent
+            });
+            map = new ol.Map({
+              layers: [new ol.layer.Image({
+                source: new ol.source.ImageStatic({
+                  url: 'http://localhost:3000/imageTest.jpg',
+                  projection: 'EPSG:31982',
+                  imageExtent: extent
+                })
+              })],
+              target: 'map',
+              view: new ol.View({
+                projection: projection,
+                center: ol.extent.getCenter(extent),
+                zoom: 2
+              })
+            });
+
+          case 24:
+            _context2.next = 29;
+            break;
+
+          case 26:
+            _context2.prev = 26;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+
+          case 29:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 26]]);
+  }));
+  return _obtainImage.apply(this, arguments);
+}</script>
+
+</html>
